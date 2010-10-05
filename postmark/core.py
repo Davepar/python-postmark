@@ -13,6 +13,8 @@ import sys
 import urllib
 import urllib2
 import httplib
+import base64
+import mimetypes
 
 try:
     import json                     
@@ -344,8 +346,8 @@ class PMMail(object):
                 if type(attachment) is tuple:
                     attachments.append({
                             "Name": attachment[0],
-                            "Content": attachment[1],
-                            "ContentType": attachment[2],
+                            "Content": base64.b64encode(attachment[1]),
+                            "ContentType": attachment[2] if attachment[2] else mimetypes.guess_type(attachment[0])[0],
                             })
                 elif isinstance(attachment, email.mime.base.MIMEBase):
                     attachments.append({
